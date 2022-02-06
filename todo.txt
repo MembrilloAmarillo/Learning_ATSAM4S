@@ -1,0 +1,8 @@
+TODO:
+[x] Solv uart printing char problem
+[] Create general functions for the GPIO
+[] Finish PMC enable main clock
+[] Start with the interrupt table
+	- Learn about interrupt table
+	- Learn about interrupts
+	- Implement uart interrupt for RX

@@ -29,9 +29,9 @@ void main( void )
     //enable_main_clock();
     enable_peripheral_clock(9);
 
-    // UART0, TX pin 10 of GPIO A
+    // UART1, TX pin 3 of GPIO B
     GPIOB->ABCDSR1 = 0 << 3;
-    GPIOB->ABCDSR2 = 0 << 3; // Enable PA10 -> UTXD0
+    GPIOB->ABCDSR2 = 0 << 3; // Enable PB3 -> UTXD1
     GPIOB->PDR     = 1 << 3; // Enables peripheral control of the pin
 
     // If set to 1, the peripheral is inactive, so we wait until

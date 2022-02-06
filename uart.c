@@ -21,17 +21,26 @@ void print_char( u8 c, u8 target )
 {
     switch( target )
     {
-        case 0:
+        case E_UART0:
         {
             while( ( UART0_BASE->SR & ( 1 << 9 ) ) == 0 );
             UART0_BASE->THR = c;
         } break;
-        case 1:
+        case E_UART1:
         {
             while( ( UART1_BASE->SR & ( 1 << 9 ) ) == 0 );
             UART1_BASE->THR = c;
         } break;
         default:
         {}
+    }
+}
+
+void print_line( char* str, u8 target )
+{
+    while( str != '\0' )
+    {
+        print_char( *str, target );
+        str++;
     }
 }

@@ -45,9 +45,9 @@ typedef struct
 	u32 PCDR1;
 	u32 PCSR1;
 	u32 OCR;
-} PMC_Registers;
+} pmc_registers;
 
-#define BASE_PMC ( ( volatile PMC_Registers * ) 0x400E0400 )
+#define PMC_BASE ( ( volatile pmc_registers * ) 0x400E0400 )
 
 void enable_main_clock();
 void enable_peripheral_clock( int );

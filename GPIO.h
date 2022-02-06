@@ -3,6 +3,8 @@
 
 #include "def.h"
 
+typedef enum { PA, PB, PC } PERIPHERALS;
+
 typedef struct {
     u32 PER;
     u32 PDR;
@@ -58,10 +60,14 @@ typedef struct {
     u32 FELLSR;
     u32 REHLSR;
     u32 FRLHSR;
-} GpioRegister;
+} gpio_register;
 
-#define GPIOA ( ( volatile GpioRegister * ) 0x400E0E00 )
-#define GPIOB ( ( volatile GpioRegister * ) 0x400E1000 ) 
-#define GPIOC ( ( volatile GpioRegister * ) 0x400E1200 )
+#define GPIOA ( ( volatile gpio_register * ) 0x400E0E00 )
+#define GPIOB ( ( volatile gpio_register * ) 0x400E1000 ) 
+#define GPIOC ( ( volatile gpio_register * ) 0x400E1200 )
+
+void enable_gpio( volatile gpio_register*, u32 );
+void disable_gpio( volatile gpio_register*, u32 );
+int enable_peripheral_pin( volatile gpio_register* gpio, u32 pin, u8 );
 
 #endif

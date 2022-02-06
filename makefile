@@ -14,7 +14,7 @@ LDFLAGS += -Wl,--gc-sections -mcpu=cortex-m4 -Tlinker.ld
 eeprom := -j .eeprom --set-section-flags=.eeprom=alloc,load --change-section-lma
 eeprom += .eeprom=0 --no-change-warnings -O binary
 
-OBJ = main.o start_up_code.o uart.o PMC.o
+OBJ = main.o start_up_code.o uart.o PMC.o GPIO.c
 
 all: elf lss bin hex
 

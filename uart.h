@@ -16,6 +16,8 @@ typedef struct
 	u32 BRGR;
 } uart_register;
 
+typedef enum { E_UART0, E_UART1 } e_uart;
+
 #define UART0_BASE ( ( volatile uart_register * ) 0x400E0600 )
 #define UART1_BASE ( ( volatile uart_register * ) 0x400E0800 )
 
@@ -25,5 +27,6 @@ typedef struct
 void enable_uart0();
 void enable_uart1();
 void print_char( u8, u8 );
+void print_line( char*, u8 );
 
 #endif

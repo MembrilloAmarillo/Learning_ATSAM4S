@@ -34,6 +34,12 @@ void enable_main_clock()
 void enable_peripheral_clock( int id )
 {
     // Enable PCER0
-    PMC_BASE->PCER0 |= 1 << id;
-    while( ( PMC_BASE->PCSR0 & ( 1 << id ) ) == 0 );
+    if( id < 32 ) {
+        PMC_BASE->PCER0 = 1 << id;
+        while( ( PMC_BASE->PCSR0 & ( 1 << id ) ) == 0 );
+    } else {
+        id -= 32;
+        PMC_BASE->PCER1 = 1 << id;
+        while( ( PMC_BASE->PCSR1 & ( 1 << id ) ) == 0 );
+    }
 }

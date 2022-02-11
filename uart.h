@@ -5,21 +5,21 @@
 
 typedef struct
 {
-	u32 CR;
-	u32 MR;
-	u32 IER;
-	u32 IDR;
-	u32 IMR;
-	u32 SR;
-	u32 RHR;
-	u32 THR;
-	u32 BRGR;
-} uart_register;
+	volatile u32 CR;
+	volatile u32 MR;
+	volatile u32 IER;
+	volatile u32 IDR;
+	volatile u32 IMR;
+	volatile u32 SR;
+	volatile u32 RHR;
+	volatile u32 THR;
+	volatile u32 BRGR;
+} Uart_Register;
 
 typedef enum { E_UART0, E_UART1 } e_uart;
 
-#define UART0_BASE ( ( volatile uart_register * ) 0x400E0600 )
-#define UART1_BASE ( ( volatile uart_register * ) 0x400E0800 )
+#define UART0_BASE ( ( Uart_Register * ) 0x400E0600 )
+#define UART1_BASE ( ( Uart_Register * ) 0x400E0800 )
 
 #define DEFAULT_PERIPHERAL_CLOCK 4000000 // 4MHz
 #define CLCK_DIVISOR ( DEFAULT_PERIPHERAL_CLOCK / ( 16 * 9600 ) )
@@ -28,5 +28,6 @@ void enable_uart0();
 void enable_uart1();
 void print_char( u8, u8 );
 void print_line( char*, u8 );
+void echo( Uart_Register* );
 
 #endif

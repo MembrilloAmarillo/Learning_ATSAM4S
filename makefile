@@ -16,10 +16,16 @@ OBJ = main.o start_up_code.o uart.o PMC.o GPIO.o
 OBJECTS = $(addprefix output/, $(OBJ))
 INC = uart.h PMC.h GPIO.h def.h
 
+ifeq ($(OS),Windows_NT)
+	EDBG_EXE := C:\dev\repos\edbg\edbg.exe -b -t sam4s -s 0 -f output/main.bin -c 9600 -pv
+else
+	EDBG_EXE := ~/dev/edbg/edbg -b -t sam4s -s 0 -f output/main.bin -c 9600 -pv 
+endif
+
 .SECONDARY: $(OBJECTS)
 
 .PHONY : clean
-all: elf lss bin run
+all: elf lss bin
 
 elf: output/main.elf
 lss: output/main.lss
@@ -46,7 +52,7 @@ output/%.o : %.c $(INC)
 	@echo $<
 
 run:
-	@C:\dev\repos\edbg\edbg.exe -b -t sam4s -s 0 -f output/main.bin -c 9600 -pv
+	sudo $(EDBG_EXE)
 
 clean:
 	rm -rf output/

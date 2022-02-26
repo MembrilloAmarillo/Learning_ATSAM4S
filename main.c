@@ -32,8 +32,10 @@ void main( void )
     // UART1, TX pin 3 of GPIO B, Peripheral A
     // Enable PB3 -> UTXD1
     // Enables peripheral control of the pin
-    enable_peripheral_pin( GPIOB, 3, PA );
-    enable_peripheral_pin( GPIOB, 2, PA );
+    enable_peripheral_pin( GPIOB, 3, PA  );
+    enable_peripheral_pin( GPIOB, 2, PA  );
+    enable_peripheral_pin( GPIOA, 9, PA  );
+    enable_peripheral_pin( GPIOA, 10, PA );
 
     // We can make this function more general, but I dont think
     // it is necessary for now

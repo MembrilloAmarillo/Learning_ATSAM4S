@@ -1,19 +1,11 @@
 #include "uart.h"
 #include "def.h"
 
-void enable_uart0()
-{
-    /* Mode register parity none */
-    UART0_BASE->MR    = ( 4 << 9 );
-    UART0_BASE->BRGR  = ( u16 )CLCK_DIVISOR;
-    UART0_BASE->CR    = ( 1 << 6 ) | ( 1 << 4 );
-}
-
 #define NVIC_ISER ( ( volatile u32* ) 0xE000E100 )
 
-void nvic_uart1_enable()
+void nvic_enable( u32 id )
 {
-    *NVIC_ISER = ( 1 << 9 ); 
+    *NVIC_ISER = ( 1 << id ); 
 }
 
 void interrupt_global_enable()
@@ -26,6 +18,18 @@ void interrupt_global_disable()
     __asm__( "cpsid if" );
 }
 
+void enable_uart0()
+{
+    /* Mode register parity none */
+    UART0_BASE->MR    = ( 4 << 9 );
+    UART0_BASE->BRGR  = ( u16 )CLCK_DIVISOR;
+    UART0_BASE->CR    = ( 1 << 6 ) | ( 1 << 4 );
+
+    UART1_BASE->IER   = ( 1 << 0 );
+    interrupt_global_enable();
+    nvic_enable( 8 );
+}
+
 void enable_uart1()
 {
     /* Mode register parity none */
@@ -35,16 +39,31 @@ void enable_uart1()
     UART1_BASE->IER   = ( 1 << 0 );
 
     interrupt_global_enable();
-    nvic_uart1_enable();
+    nvic_enable( 9 );
 }
 
 
 void uart1_interrupt()
 {
+    interrupt_global_disable();
     char c = UART1_BASE->RHR;
     // Print the char.
     while ((UART1_BASE->SR & (1 << 9)) == 0);
     UART1_BASE->THR = c;
+
+    while ((UART0_BASE->SR & (1 << 9)) == 0);
+    UART0_BASE->THR = c;
+    interrupt_global_enable();
+}
+
+void uart0_interrupt()
+{
+    interrupt_global_disable();
+    char c = UART0_BASE->RHR;
+    /* Print to the other uart to see on the desktop whats printing */
+    while ((UART1_BASE->SR & (1 << 9)) == 0);
+    UART1_BASE->THR = c;
+    interrupt_global_enable();
 }
 
 void echo( Uart_Register* uart ) {
@@ -74,7 +93,7 @@ void print_char( u8 c, u8 target )
             UART1_BASE->THR = c;
         } break;
         default:
-        {}
+        {} break;
     }
 }
 

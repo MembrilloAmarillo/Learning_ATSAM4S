@@ -38,6 +38,6 @@ int enable_peripheral_pin( Gpio_Register* gpio, u32 pin, u8 peripheral )
 	// Enable PB3 -> UTXD1
     gpio->PDR = 1 << pin; // Enables peripheral control of the pin
     while( ( gpio->PSR & ( 1 << pin ) ) == 1 );
-
+    
     return 1;
 }
